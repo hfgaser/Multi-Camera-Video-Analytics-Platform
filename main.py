@@ -7,10 +7,9 @@ app = Flask(__name__)
 model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
 model.conf = 0.4
 
-# Kamera listesi (webcam veya IP)
 CAMERA_SOURCES = {
     'cam1': 0,  # 0 = default webcam
-    'cam2': "http://192.168.1.140:4747/video"  # Örnek RTSP
+    'cam2': "http://192.168.1.140:4747/video"  #cam2
 }
 
 running = {}
@@ -18,7 +17,6 @@ caps = {}
 frames = {}
 locks = {}
 
-# Her kamera için ayrı stream thread
 def stream_loop(name):
     global running, caps, frames
     while running.get(name, False):
@@ -31,7 +29,6 @@ def stream_loop(name):
         with locks[name]:
             frames[name] = annotated
 
-# MJPEG üretici
 def generate_stream(name):
     while True:
         with locks[name]:
