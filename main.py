@@ -4,7 +4,7 @@ from flask import Flask, Response, jsonify
 import threading
 
 app = Flask(__name__)
-model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
 model.conf = 0.4
 
 # Kamera listesi (webcam veya IP)
@@ -22,6 +22,7 @@ locks = {}
 def stream_loop(name):
     global running, caps, frames
     while running.get(name, False):
+
         ret, frame = caps[name].read()
         if not ret:
             continue
